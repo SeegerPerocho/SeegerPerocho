@@ -294,133 +294,111 @@
                 padding-left: 1rem !important;
                 padding-right: 1rem !important;
             }
-            /* New styles for blockquote section */
+
+            /* About section mobile styles */
+            #about {
+                padding: 4rem 1rem !important;
+            }
             #about .max-w-4xl {
-                padding: 0 0.5rem !important;
+                padding: 0 !important;
             }
             #about blockquote {
-                font-size: 1.5rem !important;
-                line-height: 1.4 !important;
+                font-size: 1.25rem !important;
+                line-height: 1.6 !important;
                 text-align: left !important;
+                margin-top: 0.5rem !important;
             }
             #about img[alt="Quote mark"] {
-                width: 24px !important;
-                height: 18px !important;
-                margin-bottom: 1rem !important;
+                width: 20px !important;
+                height: 15px !important;
+                margin-bottom: 0.5rem !important;
                 margin-left: 0 !important;
+                display: block !important;
             }
         }
     </style>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            const loadingScreen = document.querySelector('.loading-screen');
-            const contentWrapper = document.querySelector('.content-wrapper');
-            const sections = document.querySelectorAll('section[id]');
-            const navLinks = document.querySelectorAll('.nav-link');
-
-            // Function to update active nav link
-            function setActiveNavLink(id) {
-                navLinks.forEach(link => {
-                    const href = link.getAttribute('href').split('#')[1];
-                    if (href === id) {
-                        link.classList.add('active');
-                    } else {
-                        link.classList.remove('active');
-                    }
+            // Set up logo click handler first
+            const logoLink = document.querySelector('.logo-link');
+            if (logoLink) {
+                logoLink.addEventListener('click', function(e) {
+                    sessionStorage.setItem('isLogoClick', 'true');
                 });
             }
 
-            // Set up intersection observer for sections
-            const observerOptions = {
-                root: null,
-                rootMargin: '-50% 0px',
-                threshold: 0
-            };
-
-            const sectionObserver = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        setActiveNavLink(entry.target.id);
-                    }
-                });
-            }, observerOptions);
-
-            // Observe all sections
-            sections.forEach(section => sectionObserver.observe(section));
-
-            // Function to handle fade-in animations
-            function initFadeAnimations() {
-                const faders = document.querySelectorAll('.fade-in');
-                faders.forEach(fader => {
-                    fader.classList.add('appear');
-                });
-            }
-
-            // Function to handle navigation with section scrolling
-            function handleNavigation(e, targetHref) {
-                e.preventDefault();
-                const [page, section] = targetHref.split('#');
-                
-                if (page === window.location.pathname.split('/').pop() || !page) {
-                    const targetElement = document.getElementById(section);
-                    if (targetElement) {
-                        targetElement.scrollIntoView({ behavior: 'smooth' });
-                        setActiveNavLink(section);
-                        history.pushState(null, null, `#${section}`);
-                    }
-                } else {
-                    localStorage.setItem('skipLoading', 'true');
-                    window.location.href = targetHref;
-                }
-            }
-
-            // Add click handlers to all navigation links
-            document.querySelectorAll('.nav-link').forEach(link => {
-                link.addEventListener('click', (e) => {
-                    const href = link.getAttribute('href');
-                    handleNavigation(e, href);
-                });
-            });
-
-            // Check if we should skip loading animation
-            const shouldSkipLoading = localStorage.getItem('skipLoading') === 'true';
-            if (shouldSkipLoading) {
-                // Clear the flag
-                localStorage.removeItem('skipLoading');
-                // Skip loading animation and show content immediately
-                loadingScreen.style.display = 'none';
-                contentWrapper && contentWrapper.classList.add('show');
-                // Initialize fade animations immediately
-                initFadeAnimations();
-
-                // If there's a hash in the URL, scroll to that section
-                if (window.location.hash) {
-                    const targetId = window.location.hash.slice(1);
-                    const targetElement = document.getElementById(targetId);
-                    if (targetElement) {
-                        setTimeout(() => {
-                            targetElement.scrollIntoView({ behavior: 'smooth' });
-                        }, 100);
-                    }
-                }
-            } else {
-                // Show loading screen for first visit only
-                const hasVisited = localStorage.getItem('hasVisited');
-                if (hasVisited) {
+            // Check if this is a navigation from logo click
+            const isLogoNavigation = sessionStorage.getItem('isLogoClick');
+            if (isLogoNavigation) {
+                // Hide loading screen immediately
+                const loadingScreen = document.querySelector('.loading-screen');
+                if (loadingScreen) {
                     loadingScreen.style.display = 'none';
-                    contentWrapper && contentWrapper.classList.add('show');
-                    initFadeAnimations();
-                } else {
-                    localStorage.setItem('hasVisited', 'true');
-                    setTimeout(() => {
-                        loadingScreen.classList.add('slide-up');
-                        contentWrapper && contentWrapper.classList.add('show');
-                        setTimeout(() => {
-                            initFadeAnimations();
-                        }, 500);
-                    }, 2000);
                 }
+                // Start observing fade-in elements immediately
+                const faders = document.querySelectorAll('.fade-in');
+                const appearOptions = {
+                    threshold: 0.15,
+                    rootMargin: "0px 0px -50px 0px"
+                };
+                const appearOnScroll = new IntersectionObserver(function(entries, appearOnScroll) {
+                    entries.forEach(entry => {
+                        if (!entry.isIntersecting) {
+                            return;
+                        } else {
+                            entry.target.classList.add('appear');
+                            appearOnScroll.unobserve(entry.target);
+                        }
+                    });
+                }, appearOptions);
+                faders.forEach(fader => {
+                    appearOnScroll.observe(fader);
+                });
+                sessionStorage.removeItem('isLogoClick');
+                return;
             }
+
+            // Rest of the loading screen and animation logic
+            const loadingScreen = document.querySelector('.loading-screen');
+            const helloText = document.querySelector('.hello-text');
+            const greetings = [
+                'Hello',
+                'Bonjour',
+                'Hola',
+                'こんにちは',
+                '안녕하세요',
+                'Ciao',
+                'Olá',
+                'Привет',
+                'مرحبا',
+                'Kamusta'
+            ];
+            let currentIndex = 0;
+
+            function updateGreeting() {
+                helloText.textContent = greetings[currentIndex];
+                currentIndex = (currentIndex + 1) % greetings.length;
+            }
+
+            // Start cycling through greetings
+            updateGreeting();
+            const greetingInterval = setInterval(updateGreeting, 500);
+
+            // Remove loading screen after 4.5 seconds and start fade-in animations
+            setTimeout(() => {
+                clearInterval(greetingInterval);
+                if (loadingScreen) {
+                    loadingScreen.classList.add('slide-up');
+                    setTimeout(() => {
+                        loadingScreen.style.display = 'none';
+                        // Start observing fade-in elements after loading screen is gone
+                        const faders = document.querySelectorAll('.fade-in');
+                        faders.forEach(fader => {
+                            appearOnScroll.observe(fader);
+                        });
+                    }, 1000);
+                }
+            }, 4500);
 
             // Hamburger menu functionality
             const hamburger = document.querySelector('.hamburger');
@@ -442,6 +420,24 @@
                     document.body.style.overflow = '';
                 });
             });
+
+            const faders = document.querySelectorAll('.fade-in');
+            
+            const appearOptions = {
+                threshold: 0.15,
+                rootMargin: "0px 0px -50px 0px"
+            };
+
+            const appearOnScroll = new IntersectionObserver(function(entries, appearOnScroll) {
+                entries.forEach(entry => {
+                    if (!entry.isIntersecting) {
+                        return;
+                    } else {
+                        entry.target.classList.add('appear');
+                        appearOnScroll.unobserve(entry.target);
+                    }
+                });
+            }, appearOptions);
         });
     </script>
 </head>
