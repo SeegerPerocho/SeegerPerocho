@@ -255,9 +255,173 @@
                 gap: 2rem;
             }
         }
+
+        @media screen and (max-width: 360px) {
+            .main-content-mobile {
+                padding-left: 0 !important;
+                text-align: center !important;
+            }
+            .main-content-mobile .hero-text {
+                font-size: 2.5rem !important;
+                text-align: center !important;
+            }
+            .main-content-mobile .flex {
+                justify-content: center !important;
+            }
+            .main-content-mobile img {
+                margin-left: auto !important;
+                margin-right: auto !important;
+            }
+            .main-content-mobile .text-left {
+                text-align: center !important;
+            }
+            .main-content-mobile .flex.items-center {
+                flex-direction: column !important;
+                gap: 0.5rem !important;
+            }
+            .main-content-mobile .flex.items-center p {
+                text-align: center !important;
+            }
+            .main-content-mobile button {
+                font-size: 0.875rem !important;
+                padding: 0.5rem 1rem !important;
+                white-space: nowrap !important;
+                display: inline-flex !important;
+                align-items: center !important;
+                gap: 0.5rem !important;
+            }
+            .container {
+                padding-left: 1rem !important;
+                padding-right: 1rem !important;
+            }
+            /* New styles for blockquote section */
+            #about .max-w-4xl {
+                padding: 0 0.5rem !important;
+            }
+            #about blockquote {
+                font-size: 1.5rem !important;
+                line-height: 1.4 !important;
+                text-align: left !important;
+            }
+            #about img[alt="Quote mark"] {
+                width: 24px !important;
+                height: 18px !important;
+                margin-bottom: 1rem !important;
+                margin-left: 0 !important;
+            }
+        }
     </style>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+            const loadingScreen = document.querySelector('.loading-screen');
+            const contentWrapper = document.querySelector('.content-wrapper');
+            const sections = document.querySelectorAll('section[id]');
+            const navLinks = document.querySelectorAll('.nav-link');
+
+            // Function to update active nav link
+            function setActiveNavLink(id) {
+                navLinks.forEach(link => {
+                    const href = link.getAttribute('href').split('#')[1];
+                    if (href === id) {
+                        link.classList.add('active');
+                    } else {
+                        link.classList.remove('active');
+                    }
+                });
+            }
+
+            // Set up intersection observer for sections
+            const observerOptions = {
+                root: null,
+                rootMargin: '-50% 0px',
+                threshold: 0
+            };
+
+            const sectionObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        setActiveNavLink(entry.target.id);
+                    }
+                });
+            }, observerOptions);
+
+            // Observe all sections
+            sections.forEach(section => sectionObserver.observe(section));
+
+            // Function to handle fade-in animations
+            function initFadeAnimations() {
+                const faders = document.querySelectorAll('.fade-in');
+                faders.forEach(fader => {
+                    fader.classList.add('appear');
+                });
+            }
+
+            // Function to handle navigation with section scrolling
+            function handleNavigation(e, targetHref) {
+                e.preventDefault();
+                const [page, section] = targetHref.split('#');
+                
+                if (page === window.location.pathname.split('/').pop() || !page) {
+                    const targetElement = document.getElementById(section);
+                    if (targetElement) {
+                        targetElement.scrollIntoView({ behavior: 'smooth' });
+                        setActiveNavLink(section);
+                        history.pushState(null, null, `#${section}`);
+                    }
+                } else {
+                    localStorage.setItem('skipLoading', 'true');
+                    window.location.href = targetHref;
+                }
+            }
+
+            // Add click handlers to all navigation links
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.addEventListener('click', (e) => {
+                    const href = link.getAttribute('href');
+                    handleNavigation(e, href);
+                });
+            });
+
+            // Check if we should skip loading animation
+            const shouldSkipLoading = localStorage.getItem('skipLoading') === 'true';
+            if (shouldSkipLoading) {
+                // Clear the flag
+                localStorage.removeItem('skipLoading');
+                // Skip loading animation and show content immediately
+                loadingScreen.style.display = 'none';
+                contentWrapper && contentWrapper.classList.add('show');
+                // Initialize fade animations immediately
+                initFadeAnimations();
+
+                // If there's a hash in the URL, scroll to that section
+                if (window.location.hash) {
+                    const targetId = window.location.hash.slice(1);
+                    const targetElement = document.getElementById(targetId);
+                    if (targetElement) {
+                        setTimeout(() => {
+                            targetElement.scrollIntoView({ behavior: 'smooth' });
+                        }, 100);
+                    }
+                }
+            } else {
+                // Show loading screen for first visit only
+                const hasVisited = localStorage.getItem('hasVisited');
+                if (hasVisited) {
+                    loadingScreen.style.display = 'none';
+                    contentWrapper && contentWrapper.classList.add('show');
+                    initFadeAnimations();
+                } else {
+                    localStorage.setItem('hasVisited', 'true');
+                    setTimeout(() => {
+                        loadingScreen.classList.add('slide-up');
+                        contentWrapper && contentWrapper.classList.add('show');
+                        setTimeout(() => {
+                            initFadeAnimations();
+                        }, 500);
+                    }, 2000);
+                }
+            }
+
             // Hamburger menu functionality
             const hamburger = document.querySelector('.hamburger');
             const mobileMenu = document.querySelector('.mobile-menu');
@@ -278,63 +442,6 @@
                     document.body.style.overflow = '';
                 });
             });
-
-            const faders = document.querySelectorAll('.fade-in');
-            
-            const appearOptions = {
-                threshold: 0.15,
-                rootMargin: "0px 0px -50px 0px"
-            };
-
-            const appearOnScroll = new IntersectionObserver(function(entries, appearOnScroll) {
-                entries.forEach(entry => {
-                    if (!entry.isIntersecting) {
-                        return;
-                    } else {
-                        entry.target.classList.add('appear');
-                        appearOnScroll.unobserve(entry.target);
-                    }
-                });
-            }, appearOptions);
-
-            // Loading screen functionality
-            const loadingScreen = document.querySelector('.loading-screen');
-            const helloText = document.querySelector('.hello-text');
-            const greetings = [
-                'Hello',
-                'Bonjour',
-                'Hola',
-                'こんにちは',
-                '안녕하세요',
-                'Ciao',
-                'Olá',
-                'Привет',
-                'مرحبا',
-                'Kamusta'
-            ];
-            let currentIndex = 0;
-
-            function updateGreeting() {
-                helloText.textContent = greetings[currentIndex];
-                currentIndex = (currentIndex + 1) % greetings.length;
-            }
-
-            // Start cycling through greetings
-            updateGreeting();
-            const greetingInterval = setInterval(updateGreeting, 500);
-
-            // Remove loading screen after 4.5 seconds and start fade-in animations
-            setTimeout(() => {
-                clearInterval(greetingInterval);
-                loadingScreen.classList.add('slide-up');
-                setTimeout(() => {
-                    loadingScreen.style.display = 'none';
-                    // Start observing fade-in elements after loading screen is gone
-                    faders.forEach(fader => {
-                        appearOnScroll.observe(fader);
-                    });
-                }, 1000);
-            }, 4500);
         });
     </script>
 </head>
@@ -351,7 +458,7 @@
     <nav class="fixed bg-white w-full z-[999] py-3 shadow-sm">
         <div class="container mx-auto px-4 flex justify-between items-center">
             <div class="flex items-center">
-                <img src="img/logo.png" alt="Logo" class="w-10 h-10 object-contain">
+                <a href="portfolio.html" class="logo-link"><img src="img/logo.png" alt="Logo" class="w-10 h-10 object-contain"></a>
             </div>
             <!-- Desktop Menu -->
             <div class="nav-links hidden lg:flex space-x-11">
@@ -378,38 +485,40 @@
         </div>
     </div>
     <div class="w-full">
-        <main class="w-full min-h-screen flex items-center pt-5 bg-[url('img/bgimg3.png')] bg-no-repeat bg-cover bg-center">
-            <div class="container mx-auto px-20">
+        <main class="w-full min-h-screen flex items-center pt-5 bg-[url('/img/bgimg3.png')] bg-no-repeat bg-cover bg-center">
+            <div class="container mx-auto px-4 md:px-20">
                 <div class="grid md:grid-cols-2 gap-8 items-center fade-in">
-                    <div class="space-y-5">
+                    <div class="space-y-5 text-left main-content-mobile pl-[25%] md:pl-[15%]">
                         <img src="img/arrow.png" alt="Arrow" class="w-4 h-8 mb-6 object-contain">
                         <div class="flex items-center space-x-4">
-                            <img src="img/heroicon2.svg" alt="Profile" class="w-10 h-10 rounded-full">
+                            <img src="img/heroicon2.svg" alt="Profile" class="w-8 md:w-10 h-8 md:h-10 rounded-full">
                             <div>
-                                <p class="font-medium">Seeger Alan J. Perocho</p>
+                                <p class="font-medium text-sm md:text-base">Seeger Alan J. Perocho</p>
                             </div>
                         </div>
-                        <div>
-                            <h1 class="text-6xl md:text-8xl md:whitespace-nowrap font-900 mb-3">UI & UX<br>DESIGNER</h1>
-                            <div class="border-t border-[#DDDDDD] "></div>
+                        <div class="text-left">
+                            <h1 class="hero-text text-3xl sm:text-5xl md:text-6xl lg:text-8xl font-900 mb-3">UI & UX<br>DESIGNER</h1>
+                            <div class="border-t border-[#DDDDDD] w-full"></div>
                         </div>
-                        <div class="flex flex-row sm:flex space-x-2">
+                        <div class="flex flex-row space-x-2">
                             <a href="https://www.facebook.com/hikki.69/" class="hover:translate-x-2 transition-transform duration-300">
-                                <i class="fab fa-facebook-f w-8"></i>
+                                <i class="fab fa-facebook-f w-6 md:w-8 text-sm md:text-base"></i>
                             </a>
                             <a href="https://dribbble.com/SeegerPerocho" class="hover:translate-x-2 transition-transform duration-300">
-                                <i class="fas fa-basketball w-8"></i>
+                                <i class="fas fa-basketball w-6 md:w-8 text-sm md:text-base"></i>
                             </a>
                             <a href="#" class="hover:translate-x-2 transition-transform duration-300">
-                                <i class="fab fa-instagram w-8"></i>
+                                <i class="fab fa-instagram w-6 md:w-8 text-sm md:text-base"></i>
                             </a>
                             <a href="#" class="hover:translate-x-2 transition-transform duration-300">
-                                <i class="fab fa-twitter w-8"></i>
+                                <i class="fab fa-twitter w-6 md:w-8 text-sm md:text-base"></i>
                             </a>
                         </div>
-                        <a href="#about"><button class="mt-4 bg-[#ffffff] border-1 border-[#9B9B9B] px-6 py-2.5 rounded-full hover:bg-[#2A2A2A] hover:text-white hover:border-[#2A2A2A]  duration-200 flex items-center gap-2">
-                            More about me <i class="fas fa-arrow-down"></i>
-                        </button></a>
+                        <div class="flex">
+                            <a href="#about"><button class="mt-4 bg-[#ffffff] border-1 border-[#9B9B9B] px-4 md:px-6 py-2 md:py-2.5 rounded-full hover:bg-[#2A2A2A] hover:text-white hover:border-[#2A2A2A] duration-200 inline-flex items-center gap-2 text-sm md:text-base">
+                                More about me <i class="fas fa-arrow-down text-xs md:text-sm"></i>
+                            </button></a>
+                        </div>
                     </div>
                     <div class="hidden lg:block h-screen relative overflow-visible">
                         <img src="img/hero.png" alt="Designer" class="w-[110%] max-w-none h-auto object-contain absolute bottom-0 right-[-10%]">
