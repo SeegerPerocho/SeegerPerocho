@@ -212,11 +212,10 @@
     <!-- Loading Screen -->
     <div class="loading-screen">
         <div class="loading-content">
-            <img src="img/logo.png" alt="Logo" class="w-16 h-16 mb-4">
+            <a href="portfolio.html" class="cursor-pointer"><img src="img/logo.png" alt="Logo" class="w-16 h-16 mb-4"></a>
             <div class="loading-text text-2xl font-light">
                 <span class="dot"></span>
-                <span>BAGOSCOUT</span>
-                
+                <span>BAGOSCOUT</span> 
             </div>
         </div>
     </div>
@@ -445,38 +444,43 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Hamburger menu functionality
-            const hamburger = document.querySelector('.hamburger');
-            const mobileMenu = document.querySelector('.mobile-menu');
-            const mobileMenuLinks = document.querySelectorAll('.mobile-menu .nav-link');
-
-            function toggleMenu() {
-                mobileMenu.classList.toggle('active');
-                hamburger.classList.toggle('active');
-                document.body.style.overflow = mobileMenu.classList.contains('active') ? 'hidden' : '';
-            }
-
-            hamburger.addEventListener('click', toggleMenu);
-
-            mobileMenuLinks.forEach(link => {
-                link.addEventListener('click', () => {
-                    mobileMenu.classList.remove('active');
-                    hamburger.classList.remove('active');
-                    document.body.style.overflow = '';
-                });
-            });
-
-            // Loading screen functionality
             const loadingScreen = document.querySelector('.loading-screen');
             const contentWrapper = document.querySelector('.content-wrapper');
 
+            // Show loading screen for 2 seconds then slide up
             setTimeout(() => {
                 loadingScreen.classList.add('slide-up');
-                setTimeout(() => {
-                    loadingScreen.style.display = 'none';
-                    contentWrapper.classList.add('show');
-                }, 1000);
+                contentWrapper.classList.add('show');
             }, 2000);
+
+            // After the slide-up animation, initialize the fade-in animations
+            setTimeout(() => {
+                // Add fade-in class to elements we want to animate
+                const sections = document.querySelectorAll('section');
+                sections.forEach((section, index) => {
+                    const elements = section.children;
+                    Array.from(elements).forEach((element, elementIndex) => {
+                        element.classList.add('fade-in');
+                        element.classList.add(`delay-${(elementIndex + 1) * 100}`);
+                    });
+                });
+
+                // Create an Intersection Observer
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add('visible');
+                        }
+                    });
+                }, {
+                    threshold: 0.1
+                });
+
+                // Observe all fade-in elements
+                document.querySelectorAll('.fade-in').forEach(element => {
+                    observer.observe(element);
+                });
+            }, 2500); // Start fade-in animations after loading screen is gone
         });
     </script>
 </body>
