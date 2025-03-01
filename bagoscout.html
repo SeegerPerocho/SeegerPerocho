@@ -446,7 +446,26 @@
         document.addEventListener('DOMContentLoaded', function() {
             const loadingScreen = document.querySelector('.loading-screen');
             const contentWrapper = document.querySelector('.content-wrapper');
+            
+            const hamburger = document.querySelector('.hamburger');
+            const mobileMenu = document.querySelector('.mobile-menu');
+            
+            hamburger.addEventListener('click', function() {
+                hamburger.classList.toggle('active');
+                mobileMenu.classList.toggle('active');
+                // Prevent scrolling when menu is open
+                document.body.style.overflow = mobileMenu.classList.contains('active') ? 'hidden' : '';
+            });
 
+            // Close mobile menu when clicking a link
+            const mobileMenuLinks = document.querySelectorAll('.mobile-menu .nav-link');
+            mobileMenuLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    hamburger.classList.remove('active');
+                    mobileMenu.classList.remove('active');
+                    document.body.style.overflow = '';
+                });
+            });
             // Show loading screen for 2 seconds then slide up
             setTimeout(() => {
                 loadingScreen.classList.add('slide-up');
