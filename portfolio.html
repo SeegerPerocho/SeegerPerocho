@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="/img/seegericon.png">
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
+      crossorigin="anonymous"/>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <title>Seeger Perocho - UI/UX Designer</title>
+    <style>
+       body{
+            font-family: 'Outfit', Inter;
+            scroll-behavior: smooth;
+        }
+        
+        @keyframes backgroundFloat {
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        main {
+            background-size: 120% 120% !important;
+            animation: backgroundFloat 15s ease-in-out infinite;
+        }
+
+        /* Add fade-in animation */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        .fade-in.appear {
+            animation: fadeIn 1s forwards;
+        }
+
+        /* Skill Row Hover Effect */
+        .skill-row {
+            position: relative;
+            padding: 1rem 0;
+            margin-left: calc(-50vw + 50%);
+            margin-right: calc(-50vw + 50%);
+            padding-left: calc(50vw - 50% + 5rem);
+            padding-right: calc(50vw - 50% + 5rem);
+            cursor: default;
+        }
+
+        .skill-row::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            width: 100%;
+            height: 0;
+            background-color: #2a2a2a;
+            transform: translateY(-50%);
+            transition: all 0.3s ease;
+            z-index: -1;
+        }
+
+        .skill-row:hover::before {
+            height: 100%;
+        }
+
+        .skill-row:hover h3,
+        .skill-row:hover .default-content {
+            color: white !important;
+        }
+
+        .default-content {
+            transition: color 0.3s ease;
+        }
+
+        .hover-content {
+            display: none;
+        }
+
+        .skill-row:hover .default-content {
+            display: none;
+        }
+
+        .skill-row:hover .hover-content {
+            display: block;
+        }
+        .nav-link {
+            color: #6B7280;
+            transition: color 0.3s ease;
+        }
+        .nav-link:hover {
+            color: #2A2A2A;
+        }
+        .nav-link:target {
+            color: #2A2A2A;
+        }
+        .active{
+            color: #2a2a2a;
+        }
+        @media (max-width: 768px) {
+            .nav-links {
+                display: flex;
+                justify-content: flex-end;
+                width: 100%;
+            }
+        }
+        /* Loading screen styles */
+        .loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #2a2a2a;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .loading-screen.slide-up {
+            transform: translateY(-100%);
+        }
+
+        .loading-content {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .dot-animation {
+            display: flex;
+            gap: 5px;
+        }
+
+        .dot {
+            width: 8px;
+            height: 8px;
+            background-color: white;
+            border-radius: 50%;
+        }
+
+        .hello-text {
+            color: white;
+            font-size: 2rem;
+        }
+
+        /* Hamburger Menu Styles */
+        .mobile-menu {
+            position: fixed;
+            top: 0;
+            right: -100%;
+            width: 100%;
+            height: 100vh;
+            background-color: #ffffff;
+            transition: 0.6s ease-in-out;
+            z-index: 998;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .mobile-menu.active {
+            right: 0;
+        }
+
+        .hamburger {
+            display: none;
+            cursor: pointer;
+            z-index: 999;
+            width: 24px;
+            height: 24px;
+            position: relative;
+            padding: 0;
+            background: none;
+            border: none;
+        }
+
+        .hamburger span {
+            display: block;
+            position: absolute;
+            height: 2px;
+            background: #2a2a2a;
+            transition: .3s ease-in-out;
+            transform-origin: center;
+            right: 0;
+        }
+
+        .hamburger span:nth-child(1) {
+            width: 15px;
+            top: 4px;
+        }
+
+        .hamburger span:nth-child(2) {
+            width: 24px;
+            top: 11px;
+        }
+
+        .hamburger span:nth-child(3) {
+            width: 20px;
+            top: 18px;
+        }
+
+        .hamburger.active span {
+            width: 24px;
+        }
+
+        .hamburger.active span:nth-child(1) {
+            transform: translateY(7px) rotate(45deg);
+        }
+
+        .hamburger.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .hamburger.active span:nth-child(3) {
+            transform: translateY(-7px) rotate(-45deg);
+        }
+
+        @media (max-width: 1024px) {
+            .hamburger {
+                display: block;
+            }
+            .nav-links {
+                display: none;
+            }
+            .mobile-menu .nav-links {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                gap: 2rem;
+            }
+        }
+    </style>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Hamburger menu functionality
+            const hamburger = document.querySelector('.hamburger');
+            const mobileMenu = document.querySelector('.mobile-menu');
+            const mobileMenuLinks = document.querySelectorAll('.mobile-menu .nav-link');
+
+            function toggleMenu() {
+                mobileMenu.classList.toggle('active');
+                hamburger.classList.toggle('active');
+                document.body.style.overflow = mobileMenu.classList.contains('active') ? 'hidden' : '';
+            }
+
+            hamburger.addEventListener('click', toggleMenu);
+
+            mobileMenuLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    mobileMenu.classList.remove('active');
+                    hamburger.classList.remove('active');
+                    document.body.style.overflow = '';
+                });
+            });
+
+            const faders = document.querySelectorAll('.fade-in');
+            
+            const appearOptions = {
+                threshold: 0.15,
+                rootMargin: "0px 0px -50px 0px"
+            };
+
+            const appearOnScroll = new IntersectionObserver(function(entries, appearOnScroll) {
+                entries.forEach(entry => {
+                    if (!entry.isIntersecting) {
+                        return;
+                    } else {
+                        entry.target.classList.add('appear');
+                        appearOnScroll.unobserve(entry.target);
+                    }
+                });
+            }, appearOptions);
+
+            // Loading screen functionality
+            const loadingScreen = document.querySelector('.loading-screen');
+            const helloText = document.querySelector('.hello-text');
+            const greetings = [
+                'Hello',
+                'Bonjour',
+                'Hola',
+                'こんにちは',
+                '안녕하세요',
+                'Ciao',
+                'Olá',
+                'Привет',
+                'مرحبا',
+                'Kamusta'
+            ];
+            let currentIndex = 0;
+
+            function updateGreeting() {
+                helloText.textContent = greetings[currentIndex];
+                currentIndex = (currentIndex + 1) % greetings.length;
+            }
+
+            // Start cycling through greetings
+            updateGreeting();
+            const greetingInterval = setInterval(updateGreeting, 500);
+
+            // Remove loading screen after 4.5 seconds and start fade-in animations
+            setTimeout(() => {
+                clearInterval(greetingInterval);
+                loadingScreen.classList.add('slide-up');
+                setTimeout(() => {
+                    loadingScreen.style.display = 'none';
+                    // Start observing fade-in elements after loading screen is gone
+                    faders.forEach(fader => {
+                        appearOnScroll.observe(fader);
+                    });
+                }, 1000);
+            }, 4500);
+        });
+    </script>
+</head>
+<body class="bg-[#ffffff]">
+    <!-- Loading Screen -->
+    <div class="loading-screen">
+        <div class="loading-content">
+            <div class="dot-animation">
+                <div class="dot"></div>
+            </div>
+            <div class="hello-text"></div>
+        </div>
+    </div>
+    <nav class="fixed bg-white w-full z-[999] py-3 shadow-sm">
+        <div class="container mx-auto px-4 flex justify-between items-center">
+            <div class="flex items-center">
+                <img src="/img/logo.png" alt="Logo" class="w-10 h-10 object-contain">
+            </div>
+            <!-- Desktop Menu -->
+            <div class="nav-links hidden lg:flex space-x-11">
+                <a href="#about" class="nav-link font-medium text-[#2a2a2a] hover:text-gray-400 text-[14px]">ABOUT</a>
+                <a href="#skills" class="nav-link font-medium text-[#2a2a2a] hover:text-gray-400 text-[14px]">SKILLS</a>
+                <a href="#works" class="nav-link font-medium text-[#2a2a2a] hover:text-gray-400 text-[14px]">WORKS</a>
+                <a href="#contact" class="nav-link font-medium text-[#2a2a2a] hover:text-gray-400 text-[14px]">CONTACT</a>
+            </div>
+            <!-- Hamburger Button -->
+            <button class="hamburger lg:hidden">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </nav>
+    <!-- Mobile Menu -->
+    <div class="mobile-menu">
+        <div class="nav-links flex flex-col items-center space-y-8">
+            <a href="#about" class="nav-link font-medium text-[#2a2a2a] hover:text-gray-400 text-[14px]">ABOUT</a>
+            <a href="#skills" class="nav-link font-medium text-[#2a2a2a] hover:text-gray-400 text-[14px]">SKILLS</a>
+            <a href="#works" class="nav-link font-medium text-[#2a2a2a] hover:text-gray-400 text-[14px]">WORKS</a>
+            <a href="#contact" class="nav-link font-medium text-[#2a2a2a] hover:text-gray-400 text-[14px]">CONTACT</a>
+        </div>
+    </div>
+    <div class="w-full">
+        <main class="w-full min-h-screen flex items-center pt-5 bg-[url('/img/bgimg3.png')] bg-no-repeat bg-cover bg-center">
+            <div class="container mx-auto px-20">
+                <div class="grid md:grid-cols-2 gap-8 items-center fade-in">
+                    <div class="space-y-5">
+                        <img src="/img/arrow.png" alt="Arrow" class="w-4 h-8 mb-6 object-contain">
+                        <div class="flex items-center space-x-4">
+                            <img src="/img/heroicon2.svg" alt="Profile" class="w-10 h-10 rounded-full">
+                            <div>
+                                <p class="font-medium">Seeger Alan J. Perocho</p>
+                            </div>
+                        </div>
+                        <div>
+                            <h1 class="text-6xl md:text-8xl md:whitespace-nowrap font-900 mb-3">UI & UX<br>DESIGNER</h1>
+                            <div class="border-t border-[#DDDDDD] "></div>
+                        </div>
+                        <div class="flex flex-row sm:flex space-x-2">
+                            <a href="https://www.facebook.com/hikki.69/" class="hover:translate-x-2 transition-transform duration-300">
+                                <i class="fab fa-facebook-f w-8"></i>
+                            </a>
+                            <a href="https://dribbble.com/SeegerPerocho" class="hover:translate-x-2 transition-transform duration-300">
+                                <i class="fas fa-basketball w-8"></i>
+                            </a>
+                            <a href="#" class="hover:translate-x-2 transition-transform duration-300">
+                                <i class="fab fa-instagram w-8"></i>
+                            </a>
+                            <a href="#" class="hover:translate-x-2 transition-transform duration-300">
+                                <i class="fab fa-twitter w-8"></i>
+                            </a>
+                        </div>
+                        <a href="#about"><button class="mt-4 bg-[#ffffff] border-1 border-[#9B9B9B] px-6 py-2.5 rounded-full hover:bg-[#2A2A2A] hover:text-white hover:border-[#2A2A2A]  duration-200 flex items-center gap-2">
+                            More about me <i class="fas fa-arrow-down"></i>
+                        </button></a>
+                    </div>
+                    <div class="hidden lg:block h-screen relative overflow-visible">
+                        <img src="/img/hero.png" alt="Designer" class="w-[110%] max-w-none h-auto object-contain absolute bottom-0 right-[-10%]">
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    <section id="about" class="container mx-auto mt-15 px-20 py-20">
+        <div class="fade-in">
+            <h2 class="text-[#2A2A2A] text-[15px] font-regular mb-10 z-98">ABOUT ME</h2>
+            <div class="border-t border-[#DDDDDD] mb-16"></div>
+            <div class="max-w-4xl">
+                <img src="/img/qouteicon.png" alt="Quote mark" class="w-8 h-6 mb-8">
+                <blockquote class="text-3xl text-[#2A2A2A] font-extralight leading-relaxed">
+                    I'm a designer from Bago City Negros Occidental with a strong focus and goal for producing high quality designs that can solve problems particularly in the field of UI and UX.
+                </blockquote>
+            </div>
+        </div>
+    </section>
+    <section id="skills" class="container mx-auto px-20 py-20">
+        <div class="fade-in">
+            <h2 class="text-[#2A2A2A] text-[15px] font-regular mb-10">WHAT I DO</h2>
+            <div class="border-t border-[#DDDDDD] mb-16"></div>
+            <div class="space-y-16">
+                <div class="flex flex-col lg:grid lg:grid-cols-2 gap-4 lg:gap-8 items-start skill-row">
+                    <h3 class="text-3xl md:text-4xl lg:text-5xl whitespace-nowrap font-light text-[#2A2A2A] transition-colors mb-2 lg:mb-0">UI & UX</h3>
+                    <div class="text-lg font-light block">
+                        <p class="text-[#2A2A2A] transition-colors default-content">Specializing in UI and UX design with over 3 years of experience using Figma.</p>
+                        <p class="text-white transition-colors hover-content">Pretty much 70% user interface and the rest is user experience.</p>
+                    </div>
+                </div>
+                <div class="flex flex-col lg:grid lg:grid-cols-2 gap-4 lg:gap-8 items-start skill-row">
+                    <h3 class="text-3xl md:text-4xl lg:text-5xl font-light text-[#2A2A2A] transition-colors mb-2 lg:mb-0">LOGO</h3>
+                    <div class="text-lg font-light block">
+                        <p class="text-[#2A2A2A] transition-colors default-content">Discovered the knack for creating logo at the early stage of my design journey.</p>
+                        <p class="text-white transition-colors hover-content">I was just slacking off until I tried giving it a shot, well turns out I can actually make them.</p>
+                    </div>
+                </div>
+                <div class="flex flex-col lg:grid lg:grid-cols-2 gap-4 lg:gap-8 items-start skill-row">
+                    <h3 class="text-3xl md:text-4xl lg:text-5xl font-light text-[#2A2A2A] transition-colors mb-2 lg:mb-0">ILLUSTRATION</h3>
+                    <div class="text-lg font-light block">
+                        <p class="text-[#2A2A2A] transition-colors default-content">Creating basic illustrations for 2 years.</p>
+                        <p class="text-white transition-colors hover-content">Dogs and cats and some other random stuff.</p>
+                    </div>
+                </div>
+                <div class="flex flex-col lg:grid lg:grid-cols-2 gap-4 lg:gap-8 items-start skill-row">
+                    <h3 class="text-3xl md:text-4xl lg:text-5xl font-light text-[#2A2A2A] transition-colors mb-2 lg:mb-0">GRAPHIC</h3>
+                    <div class="text-lg font-light block">
+                        <p class="text-[#2A2A2A] transition-colors default-content">Was developed from school activities up to date.</p>
+                        <p class="text-white transition-colors hover-content">They said it pays decently.</p>
+                    </div>
+                </div>
+                <div class="flex flex-col lg:grid lg:grid-cols-2 gap-4 lg:gap-8 items-start skill-row">
+                    <h3 class="text-3xl md:text-4xl lg:text-5xl font-light text-[#2A2A2A] transition-colors mb-2 lg:mb-0">CHARACTER</h3>
+                    <div class="text-lg font-light block">
+                        <p class="text-[#2A2A2A] transition-colors default-content">With over a year of creating character designs using design platforms like Figma.</p>
+                        <p class="text-white transition-colors hover-content">Honestly, I made a lot of progress just making random concepts of characters.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section id="works" class="container mx-auto px-20 py-20">
+        <div class="fade-in">
+            <h2 class="text-[#2A2A2A] text-[15px] font-regular mb-10">RECENT WORK</h2>
+            <div class="border-t border-[#DDDDDD] mb-16"></div>   
+            <div class="space-y-32">
+                <div class="group relative cursor-pointer">
+                    <div class="overflow-hidden">
+                        <a href="bagoscout.html"><img src="/img/bagoscout.png" alt="BagoScout Project" class="w-full object-cover transition-transform duration-500 group-hover:scale-110">
+                        <div class="absolute inset-0 bg-[#2A2A2A] bg-opacity-0 group-hover:bg-opacity-0 transition-all duration-300 flex flex-col justify-center px-8">
+                            <h3 class="text-1xl lg:text-2xl font-medium text-[#2A2A2A] max-w-sm duration-300 mb-4">BAGOSCOUT</h3>
+                            <p class="text-base text-[#2A2A2A] max-w-sm hidden lg:block font-light text-[14px] duration-300">A major academic project which aims to provide a sustainable modernized online job portal for the locals of Bago City.</p>
+                        </div></a>
+                    </div>
+                </div>
+                <div class="group relative cursor-pointer">
+                   <div class="overflow-hidden">
+                    <a href="animeal.html"><img src="/img/animeal.png" alt="Pet Sanctuary Project" class="w-full object-cover transition-transform duration-500 group-hover:scale-110">
+                        <div class="absolute inset-0 bg-[#2A2A2A] bg-opacity-0 group-hover:bg-opacity-0 transition-all duration-300 flex flex-col justify-center px-8">
+                            <h3 class="text-1xl lg:text-2xl font-medium text-[#2A2A2A] max-w-sm duration-300 mb-4">ANIMEAL</h3>
+                            <p class="text-base text-[#2A2A2A] max-w-sm hidden lg:block font-light text-[14px] duration-300">Animeal is tailored for anime fanatics & readers, a personal project with a purpose to bring modern trends together in one place.</p>
+                        </div></a>
+                    </div>
+                </div>
+                <div class="group relative cursor-pointer">
+                    <div class="overflow-hidden">
+                        <img src="/img/petsanctuary.png" alt="BagoScout Project" class="w-full object-cover transition-transform duration-500 group-hover:scale-110">
+                        <div class="absolute inset-0 bg-[#2A2A2A] bg-opacity-0 group-hover:bg-opacity-0 transition-all duration-300 flex flex-col justify-center px-8">
+                            <h3 class="text-1xl lg:text-2xl font-medium text-[#2A2A2A] max-w-sm duration-300 mb-4">PET SANCTUARY</h3>
+                            <p class="text-base text-[#2A2A2A] max-w-sm hidden lg:block font-light text-[14px] duration-300">Pet Sanctuary is a project for a modernized veterinary clinic that provides healthcare, online appointments & schedules.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="group relative cursor-pointer">
+                    <div class="overflow-hidden">
+                        <img src="/img/darktales.png" alt="BagoScout Project" class="w-full object-cover transition-transform duration-500 group-hover:scale-110">
+                        <div class="absolute inset-0 bg-[#2A2A2A] bg-opacity-0 group-hover:bg-opacity-0 transition-all duration-300 flex flex-col justify-center px-8">
+                            <h3 class="text-1xl lg:text-2xl font-medium text-[#2A2A2A] max-w-sm duration-300 mb-4">DARKTALES</h3>
+                            <p class="text-base text-[#2A2A2A] max-w-sm hidden lg:block font-light text-[14px] duration-300">Another personal project showcasing my skills in character design in a click adventure game titled, "Darktales".</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br><br><br>
+        </div>
+    </section>
+    <section id="contact" class="w-full bg-[#2a2a2a]">
+        <div class="container mx-auto px-20 py-20">
+            <div class="fade-in">
+                <h2 class="text-white text-[15px] font-regular mb-10">CONNECT WITH ME</h2>
+                <div class="border-t border-[#DDDDDD] opacity-25 mb-16"></div>
+                <div class="grid md:grid-cols-3 gap-16">
+                    <div class="space-y-8">
+                        <a href="#" class="block group">
+                            <div class="flex items-center space-x-3">
+                                <span class="text-white text-xl font-light hover:translate-x-2 transition-transform duration-300">Dribbble</span>
+                            </div>
+                        </a>
+                        <a href="#" class="block group">
+                            <div class="flex items-center space-x-3">
+                                <span class="text-white text-xl font-light hover:translate-x-2 transition-transform duration-300">Behance</span>
+                            </div>
+                        </a>
+                        <a href="#" class="block group">
+                            <div class="flex items-center space-x-3">
+                                <span class="text-white text-xl font-light hover:translate-x-2 transition-transform duration-300">Linkedin</span>
+                            </div>
+                        </a>
+                        <a href="#" class="block group">
+                            <div class="flex items-center space-x-3">
+                                <span class="text-white text-xl font-light hover:translate-x-2 transition-transform duration-300">Instagram</span>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="space-y-8">
+                        <a href="#" class="block group">
+                            <div class="flex items-center space-x-3">
+                                <span class="text-white text-xl font-light hover:translate-x-2 transition-transform duration-300">Facebook</span>
+                            </div>
+                        </a>
+                        <a href="#" class="block group">
+                            <div class="flex items-center space-x-3">
+                                <span class="text-white text-xl font-light hover:translate-x-2 transition-transform duration-300">Twitter</span>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="space-y-8">
+                        <div>
+                            <h3 class="text-white text-xl font-light mb-2">Email</h3>
+                            <p class="text-white text-lg font-light">seegerperocho2@gmail.com</p>
+                        </div>
+                        <div>
+                            <h3 class="text-white text-xl font-light mb-2">Phone</h3>
+                            <p class="text-white text-lg font-light">09272770032</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-32 text-center">
+                    <div class="border-t border-[#DDDDDD] opacity-25 mb-16"></div>
+                    <p class="text-white mb--400 text-sm font-light">©SegerPerocho 2025. All Rights Reserved</p>
+                </div>
+            </div>
+        </div>
+    </section>
+</body>
+</html>
