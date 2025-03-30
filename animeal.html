@@ -2,862 +2,454 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Seeger Perocho - UI/UX Designer</title>
-    <link rel="icon" href="img/logowhite.png" type="image/x-icon">
-    <link href="https://fonts.cdnfonts.com/css/neue-haas-grotesk-display-pro" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: {
-                        'neue': ['Neue Haas Grotesk Display Pro', 'sans-serif'],
-                    },
-                    colors: {
-                        'neon': '#C4FF0F',
-                    },
-                }
-            }
-        }
-    </script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="img/seegericon.png">
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
+      crossorigin="anonymous"/>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <title>Animeal - UI/UX Design</title>
     <style>
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar {
-            width: 0;
-            background: transparent;
-        }
-
-        /* Smooth Scrolling */
-        html {
-            scroll-behavior: smooth;
-        }
-
-        /* Circular Text Animation */
-        .circular-text {
-            position: fixed;
-            width: 100px;
-            height: 100px;
-            pointer-events: none;
-            z-index: 1;
-            animation: spin 8s linear infinite;
-            mix-blend-mode: difference;
-            color: white;
-            font-size: 12px;
-            letter-spacing: 1px;
-            transform: translate(-50%, -50%);
-        }
-        @media (max-width: 768px) {
-            .circular-text {
-                left: 50% !important;
-                bottom: 5px;
-                top: auto !important;
-            }
-        }
-        @keyframes spin {
-            from { transform: translate(-50%, -50%) rotate(0deg); }
-            to { transform: translate(-50%, -50%) rotate(360deg); }
-        }
-        .circular-text svg {
-            width: 100%;
-            height: 100%;
-        }
-        .circular-text path {
-            fill: none;
-        }
-        .circular-text text {
-            fill: currentColor;
-            font-family: 'Neue Haas Grotesk Display Pro', sans-serif;
-            font-weight: 500;
-            text-transform: uppercase;
-        }
+      
+        /* Loading Screen Styles */
         .loading-screen {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: #181B1D;
+            background-color: #2a2a2a;
             display: flex;
-            flex-direction: column;
             justify-content: center;
             align-items: center;
-            z-index: 10000;
-            transition: transform 1s cubic-bezier(0.87, 0, 0.13, 1);
+            z-index: 9999;
+            transition: transform 0.8s ease-in-out;
         }
-        .loading-screen.hide {
-            transform: translateY(-100%);
-        }
-        .loading-screen img {
-            width: 60px;
-            height: 60px;
-            margin-bottom: 20px;
-            display: block;
-            margin-left: auto;
-            margin-right: auto;
-        }
-        .fixed-logo {
-            width: 30px;
-            height: 30px;
-            position: fixed;
-            left: 50%;
-            bottom: 90px;
-            transform: translateX(-50%);
-            z-index: 2;
-            pointer-events: none;
-            mix-blend-mode: difference;
-            display: block;
-        }
-        @media (min-width: 768px) {
-            .fixed-logo {
-                display: none;
-            }
-        }
-        .loading-screen p {
-            color: white;
-            font-size: 14px;
-            letter-spacing: 0.5px;
-        }
-        .main-content {
-            opacity: 0;
-            visibility: hidden;
-        }
-        .main-content.show {
-            opacity: 1;
-            visibility: visible;
-            transition: opacity 1s ease 0.8s;
-        }
-        .content-section {
-            opacity: 0;
-            transform: translateY(20px);
-            transition: all 1s ease;
-        }
-        .content-section.show {
-            opacity: 1;
-            transform: translateY(0);
-        }
-        .reveal-text .word {
-            display: inline-block;
-            color: #666;
-            transition: all 0.8s ease;
-            margin-right: 0.3em;
-            opacity: 0.3;
-        }
-        .reveal-text .word.revealed {
-            color: white;
-            opacity: 1;
-        }
-        /* Fix for mobile extra width */
-        html, body {
-            overflow-x: hidden;
-            width: 100%;
-            max-width: 100%;
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-        * {
-            box-sizing: border-box;
-        }
-        .container {
-            width: 100%;
-            padding-left: 1rem;
-            padding-right: 1rem;
-            box-sizing: border-box;
-        }
-        @media (max-width: 640px) {
-            .container {
-                padding-left: 1rem;
-                padding-right: 1rem;
-            }
-        }
-        img {
-            max-width: 100%;
-            height: auto;
-        }
-
-        /* Skill item neon effect */
-        .skill-item {
-            position: relative;
-            height: 70px; /* Fixed height for all skill items */
-            margin-bottom: 0; /* Remove margin */
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            padding: 0; /* Remove all padding */
-        }
-        
-        .skill-item:first-child {
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .skill-name, .skill-desc {
-            position: absolute;
-            left: 0;
-            top: 50%;
-            transform: translateY(-50%);
-            transition: opacity 0.3s ease, visibility 0.3s ease;
-            width: 100%;
-            padding: 0; /* Remove any padding */
-            margin: 0; /* Remove any margin */
-            line-height: 1; /* Ensure consistent line height */
-        }
-        
-        @media (min-width: 640px) {
-            .skill-item {
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-                height: auto;
-                padding: 1rem 0; /* Equal padding top and bottom */
-            }
-            
-            .skill-name, .skill-desc {
-                position: relative;
-                transform: none;
-                top: auto;
-                left: auto;
-                width: auto;
-            }
-        }
-        
-        .skill-name {
+        .loading-content {
             display: flex;
             align-items: center;
+            gap: 12px;
         }
-        
-        .skill-desc {
-            visibility: hidden;
+        .loading-text {
+            color: white;
+            font-size: 24px;
+            letter-spacing: 2px;
+        }
+        .dot-animation {
+            display: flex;
+            gap: 4px;
+        }
+        .dot {
+            width: 8px;
+            height: 8px;
+            background-color: white;
+            border-radius: 50%;
+            animation: dotPulse 1.5s infinite;
+        }
+        .dot:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+        .dot:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+        @keyframes dotPulse {
+            0%, 100% {
+                transform: scale(0.8);
+                opacity: 0.5;
+            }
+            50% {
+                transform: scale(1.2);
+                opacity: 1;
+            }
+        }
+        .hide-loading {
+            transform: translateY(-100%);
+        }
+        .content-wrapper {
+            position: relative;
+            z-index: 1;
+        }
+        .nav-link {
+            color: #6B7280;
+            transition: color 0.3s ease;
+        }
+        .nav-link:hover {
+            color: #2A2A2A;
+        }
+        .nav-link:target {
+            color: #2A2A2A;
+        }
+        .active{
+            color: #2a2a2a;
+        }
+        /* Hamburger Menu Styles */
+        .mobile-menu {
+            position: fixed;
+            top: 0;
+            right: -100%;
+            width: 100%;
+            height: 100vh;
+            background-color: #2a2a2a;
+            transition: 0.6s ease-in-out;
+            z-index: 998;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .mobile-menu.active {
+            right: 0;
+        }
+
+        .hamburger {
+            display: none;
+            cursor: pointer;
+            z-index: 999;
+            width: 24px;
+            height: 24px;
+            position: relative;
+            padding: 0;
+            background: none;
+            border: none;
+        }
+
+        .hamburger span {
+            display: block;
+            position: absolute;
+            height: 2px;
+            background: #2a2a2a; 
+            transition: .3s ease-in-out;
+            transform-origin: center;
+            right: 0;
+        }
+
+        .hamburger span:nth-child(1) {
+            width: 15px;
+            top: 4px;
+            
+        }
+
+        .hamburger span:nth-child(2) {
+            width: 24px;
+            top: 11px;
+        }
+
+        .hamburger span:nth-child(3) {
+            width: 20px;
+            top: 18px;
+        }
+
+        .hamburger.active span {
+            width: 24px;
+        }
+
+        .hamburger.active span:nth-child(1) {
+            transform: translateY(7px) rotate(45deg);
+        }
+
+        .hamburger.active span:nth-child(2) {
             opacity: 0;
-            text-align: left;
-            padding-right: 20px;
         }
-        
-        @media (max-width: 639px) {
-            .skill-desc {
-                color: #C4FF0F; /* Neon color for mobile view */
-                font-weight: 500; /* Slightly bolder to enhance visibility */
+
+        .hamburger.active span:nth-child(3) {
+            transform: translateY(-7px) rotate(-45deg);
+        }
+
+        @media (max-width: 1024px) {
+            .hamburger {
+                display: block;
             }
-        }
-        
-        @media (min-width: 640px) {
-            .skill-item {
-                display: flex;
-                justify-content: space-between;
+            /* .hamburger span {
+                background: #ffffff;
+            } */
+            .nav-links {
+                display: none !important;
+            }
+            .mobile-menu .nav-links {
+                display: flex !important;
+                flex-direction: column;
                 align-items: center;
-                height: auto;
-                padding-bottom: 1rem;
+                gap: 2rem;
             }
-            
-            .skill-name, .skill-desc {
-                position: relative;
-                transform: none;
-                top: auto;
-                left: auto;
-                width: auto;
-            }
-            
-            .skill-name {
-                flex: 0 0 auto;
-            }
-            
-            .skill-desc {
-                visibility: visible !important; /* Force visibility on desktop */
-                opacity: 1 !important; /* Force opacity on desktop */
-                text-align: right;
-                max-width: 280px;
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: flex;
+                justify-content: flex-end;
+                width: 100%;
             }
         }
     </style>
 </head>
-<body class="min-h-screen bg-[#181B1D] text-white font-neue overflow-x-hidden [&::-webkit-scrollbar]:hidden [-ms-overflow-style:'none'] [scrollbar-width:'none']">
+<body>
     <div class="loading-screen">
-        <img src="img/logowhite.png" alt="Logo">
+        <div class="loading-content">
+            <div class="dot-animation">
+                <div class="dot"></div>
+            </div>
+            <div class="loading-text">ANIMEAL</div>
+        </div>
     </div>
-
-
-    <div class="main-content">
-        <div class="circular-text">
-            <svg viewBox="0 0 100 100">
-                <path id="curve" d="M 50 50 m -37 0 a 37 37 0 1 1 74 0 a 37 37 0 1 1 -74 0"/>
-                <text>
-                    <textPath href="#curve">SCROLL DOWN • SCROLL DOWN • SCROLL DOWN •</textPath>
-                </text>
-            </svg>
-        </div>
-        <img src="img/logowhite.png" alt="Logo" class="fixed-logo">
-
-        <div class="fixed top-6 left-0 right-0 flex justify-center z-[999]">
-            <nav class="flex justify-center items-center bg-black/90 md:bg-black/85 backdrop-blur-sm shadow-lg rounded-full px-3 md:px-3 py-2.5 md:py-2 gap-2 md:gap-3 border-[1px] border-[#252A2D]">
-                <a href="#about" class="uppercase tracking-wider font-medium text-[11px] md:text-[13px] px-2 md:px-4 py-1.5 md:py-2 transition-colors hover:text-neon">ABOUT</a>
-                <a href="#works" class="uppercase tracking-wider font-medium text-[11px] md:text-[13px] px-2 md:px-4 py-1.5 md:py-2 transition-colors hover:text-neon">WORKS</a>
-                <a href="#skills" class="uppercase tracking-wider font-medium text-[11px] md:text-[13px] px-2 md:px-4 py-1.5 md:py-2 transition-colors hover:text-neon">SKILLS</a>
-                <a href="#contact" class="bg-neon text-black px-4 md:px-6 py-1.5 md:py-2 rounded-full font-medium uppercase tracking-wider text-[11px] md:text-[13px] hover:bg-white transition-colors">CONTACT</a>
-            </nav>
-        </div>
-
-        <div class="content-section min-h-screen md:min-h-0 flex items-center md:block bg-cover bg-center bg-no-repeat" style="background-image: url('img/backgroundmain.png')">
-            <div class="container mx-auto px-4 md:pt-60 md:pb-32">
-                <div class="relative flex flex-col justify-center md:block">
-                    <h1 class="text-[18vw] md:text-[12vw] z-98 leading-[0.9] tracking-tight mb-8 md:mb-0">
-                        DESIGN WITH<br>
-                        <span class="text-neon italic font-medium">FOCUS.</span>
-                    </h1>
-                    <div class="flex items-start max-w-sm md:absolute md:bottom-[1vw] md:right-0 mt-8 md:mt-0">
-                        <p class="text-base md:text-md text-white leading-relaxed text-gray-400 max-w-[280px]">
-                            Seeger Perocho is a UI/UX Designer from the Philippines, producing quality designs to provide design solutions
-                        </p>
-                    </div>
+    <nav class="fixed w-full z-[999] py-3">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center">
+                <div class="flex items-center">
+                    <a href="index.html"><img src="img/logo.png" alt="Logo" class="w-9 cursor-pointer h-9"></a>
                 </div>
+                <div class="nav-links flex space-x-6 sm:space-x-8 lg:space-x-11">
+                    <a href="index.html" class="nav-link font-medium text-[#2a2a2a] hover:text-gray-400 text-[14px]">ABOUT</a>
+                    <a href="index.html" class="nav-link font-medium text-[#2a2a2a] hover:text-gray-400 text-[14px]">SKILLS</a>
+                    <a href="index.html" class="nav-link font-medium text-[#2a2a2a] hover:text-gray-400 text-[14px]">WORKS</a>
+                    <a href="index.html" class="nav-link font-medium text-[#2a2a2a] hover:text-gray-400 text-[14px]">CONTACT</a>
+                </div>
+                <!-- Hamburger Button -->
+                <button class="hamburger lg:hidden">
+                    <span class="hamburger-span ham1"></span>
+                    <span class="hamburger-span ham2"></span>
+                    <span class="hamburger-span ham3"></span>
+                </button>
             </div>
         </div>
-
-        <main id="about" class="content-section min-h-screen md:min-h-0 flex items-center md:block container mx-auto px-4 md:py-32">
-            <div class="flex flex-col md:flex-row gap-8 md:gap-16 relative">
-                <div class="flex gap-4 items-start text-sm md:text-md relative after:content-[''] after:hidden md:after:block after:absolute after:right-[-47px] after:top-0 after:w-[1px] after:h-[200%] after:bg-white/5">
-                    <span class="text-neon">01</span>
-                    <span>About me</span>
+    </nav>
+    <!-- Mobile Menu -->
+    <div class="mobile-menu">
+        <div class="nav-links flex flex-col items-center space-y-8">
+            <a href="index.html" class="nav-link font-medium text-[#ffffff] hover:text-gray-400 text-[14px]">ABOUT</a>
+            <a href="index.html" class="nav-link font-medium text-[#ffffff] hover:text-gray-400 text-[14px]">SKILLS</a>
+            <a href="index.html" class="nav-link font-medium text-[#ffffff] hover:text-gray-400 text-[14px]">WORKS</a>
+            <a href="index.html" class="nav-link font-medium text-[#ffffff] hover:text-gray-400 text-[14px]">CONTACT</a>
+        </div>
+    </div>
+    <div class="content-wrapper">
+        <section class="pt-32 pb-20">
+            <div class="container mx-auto px-16 max-w-[1240px]">
+                <div class="max-w-3xl">
+                    <h1 class="text-[40px] text-[#2a2a2a] font-regular mb-3">ANIMEAL</h1>
                 </div>
-                <div class="ml-8 space-y-6 sm:space-y-8 flex-1">
-                    <div class="text-[8vw] sm:text-[4vw] leading-tight max-w-4xl reveal-text">
-                        I'm a UI/UX Designer crafting beautiful and clean designs that can get those numbers pumping in your website.
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-20 mt-12 max-w-10xl">
+                    <div>
+                        <h4 class="text-[12px] uppercase text-gray-500 mb-4">ROLE / SERVICES</h4>
+                        <div class="border-t border-[#DDDDDD] mb-4"></div>
+                        <p class="text-[14px]">UI & UX Designer</p>
                     </div>
-                    <div class="text-[8vw] sm:text-[4vw] leading-tight max-w-4xl reveal-text">
-                        Whether you're a startup looking for an impactful website or an established brand seeking to elevate your digital presence, I'm the guy that can turn your vision to reality.
+                    <div>
+                        <h4 class="text-[12px] uppercase text-gray-500 mb-4">CREDITS</h4>
+                        <div class="border-t border-[#DDDDDD] mb-4"></div>
+                        <p class="text-[14px]">---</p>
+                        <p class="text-[14px]">---</p>
                     </div>
-                </div>
-            </div>
-        </main>
-
-        <section id="works" class="content-section min-h-screen bg-[#111415] py-20 sm:py-32">
-            <div class="container mx-auto px-4">
-            <div class="flex flex-col sm:flex-row gap-8 sm:gap-16">
-                <div class="sm:w-[95px] flex-shrink-0" style="height: auto">
-                    <div class="sm:sticky sm:top-32">
-                        <div class="flex gap-4 items-start text-xs sm:text-sm relative after:content-[''] after:hidden sm:after:block after:absolute after:right-[-35px] after:top-[-128px] after:w-[1px] after:h-[43200%] after:bg-white/5">
-                            <span class="text-neon">02</span>
-                            <span>Works</span>
-                        </div>
-                        <div class="mt-8 sm:mt-20">
-                            <div class="flex sm:block items-center gap-4 sm:gap-0">
-                                <div class="opacity-50 text-xs sm:text-sm">(Selected Works)</div>
-                                <div class="text-[8vw] sm:text-[5vw] leading-none sm:mt-2">
-                                    <span class="sm:hidden">SW 2K 20+</span>
-                                    <span class="hidden sm:block">
-                                        SW<br>
-                                        2K<br>
-                                        20+
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
+                    <div>
+                        <h4 class="text-[12px] uppercase text-gray-500 mb-4">LOCATION & YEAR</h4>
+                        <div class="border-t border-[#DDDDDD] mb-4"></div>
+                        <p class="text-[14px]">Philippines © 2023</p>
                     </div>
                 </div>
-                <div class="space-y-24 sm:space-y-32 flex-1">
-                    <!-- StackedAI -->
-                    <div class="space-y-6 sm:space-y-8">
-                        <div class="pl-4 sm:pl-6 mb-6 sm:mb-8">
-                            <div class="flex items-center gap-2 sm:gap-4 text-xs sm:text-sm mb-3 sm:mb-4">
-                                <span>UI/UX</span>
-                                <span>•</span>
-                                <span>2025</span>
-                            </div>
-                            <h3 class="text-2xl sm:text-3xl mb-3 sm:mb-4">StackedAI</h3>
-                            <p class="opacity-50 max-w-lg text-sm sm:text-base">A chatbot that uses natural language processing to create humanlike conversational dialogue.</p>
-                        </div>
-                        <img src="img/stackedAI.png" alt="StackedAI Preview" class="w-full rounded-lg">
-                    </div>
-                    
-                     <!-- BagoScout -->
-                    <div class="space-y-6">
-                        <div class="pl-4 mb-6">
-                            <div class="flex items-center gap-4 text-sm mb-4">
-                                <span>UI/UX</span>
-                                <span>•</span>
-                                <span>2024</span>
-                            </div>
-                            <h3 class="text-3xl mb-4">BagoScout</h3>
-                            <p class="opacity-50 mb-20 max-w-lg">A website that aims to provide sustainable modernized online job portal for the locals of Bago City.
-
-                            </p>
-                        </div>
-                        <img src="img/bagoscout.png" alt="StackedAI Preview" class="w-full rounded-lg">
-                    </div>
-
-                    <!-- Keira -->
-                    <div class="space-y-6">
-                        <div class="pl-4 mb-6">
-                            <div class="flex items-center gap-4 text-sm mb-4">
-                                <span>UI/UX</span>
-                                <span>•</span>
-                                <span>2024</span>
-                            </div>
-                            <h3 class="text-3xl mb-4">Keira</h3>
-                            <p class="opacity-50 max-w-lg">A clean, modern, and elegant E-Commerce website for clothing and apparel.</p>
-                        </div>
-                        <img src="img/keira.png" alt="Keira Preview" class="w-full rounded-lg">
-                    </div>
-
-                    <!-- Animeal -->
-                    <div class="space-y-6">
-                        <div class="pl-4 mb-6">
-                            <div class="flex items-center gap-4 text-sm mb-4">
-                                <span>UI/UX</span>
-                                <span>•</span>
-                                <span>2023</span>
-                            </div>
-                            <h3 class="text-3xl mb-4">ANIMEAL</h3>
-                            <p class="opacity-50 max-w-lg">A gaming news center focused to provide information. Discussion within the community of anime fanatics.</p>
-                        </div>
-                        <img src="img/animealweb.png" alt="Animeal Preview" class="w-full rounded-lg">
-                    </div>
-                    <div class="space-y-6">
-                        <div class="pl-4 mb-6">
-                            <div class="flex items-center gap-4 text-sm mb-4">
-                                <span>UI/UX</span>
-                                <span>•</span>
-                                <span>2023</span>
-                            </div>
-                            <h3 class="text-3xl mb-4">Cycle</h3>
-                            <p class="opacity-50 max-w-lg">An E-Commerce website that sells quality brand bicycles.</p>
-                        </div>
-                        <img src="img/cycle.png" alt="StackedAI Preview" class="w-full rounded-lg">
-                    </div>
-                    <!-- KITTY -->
-                    <div class="space-y-6">
-                        <div class="pl-4 mb-6">
-                            <div class="flex items-center gap-4 text-sm mb-4">
-                                <span>UI/UX</span>
-                                <span>•</span>
-                                <span>2022</span>
-                            </div>
-                            <h3 class="text-3xl mb-4">KITTY.</h3>
-                            <p class="opacity-50 max-w-lg">An online store for everything that your lovely pets may need.</p>
-                        </div>
-                        <img src="img/kitty.png" alt="KITTY Preview" class="w-full rounded-lg">
-                    </div>
-
-                    <!-- Rave -->
-                    <div class="space-y-6">
-                        <div class="pl-4 mb-6">
-                            <div class="flex items-center gap-4 text-sm mb-4">
-                                <span>UI/UX</span>
-                                <span>•</span>
-                                <span>2021</span>
-                            </div>
-                            <h3 class="text-3xl mb-4">Rave</h3>
-                            <p class="opacity-50 max-w-lg">Rave is an innovative music platform designed to connect people with personalized listening without boundaries. Play music & anywhere.</p>
-                        </div>
-                        <img src="img/rave.png" alt="Rave Preview" class="w-full rounded-lg">
+                <div class="mt-20 max-w-6xl">
+                    <h4 class="text-[12px] uppercase text-gray-500 mb-4">CASE STUDY</h4>
+                    <div class="border-t border-[#DDDDDD] mb-4"></div>
+                </div>
+                <div class="mt-12">
+                    <div class="relative overflow-hidden group">
+                        <img src="img/animealimg1.png" alt="Bagoscout Project Preview" class="w-full h-auto">
                     </div>
                 </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Skills Section -->
-        <section id="skills" class="skills-section sm:min-h-screen bg-[#181B1D] py-12 sm:py-32">
-            <div class="container mx-auto px-4">
-                <div class="flex flex-col sm:flex-row gap-8 sm:gap-16">
-                    <div class="sm:w-[95px] flex-shrink-0" style="height: auto">
-                        <div class="sm:top-32">
-                            <div class="flex gap-4 items-start text-xs sm:text-sm relative after:content-[''] after:hidden sm:after:block after:absolute after:right-[-35px] after:top-[-97px] after:w-[1px] after:h-[3350%] after:bg-white/5">
-                                <span class="text-neon">03</span>
-                                <span>Skills</span>
-                            </div>
-                            
-                            <div class="mt-8 sm:mt-24 flex sm:block items-center gap-4 sm:gap-0">
-                                <div class="text-xs sm:text-sm text-white sm:opacity-50">
-                                    <span class="sm:hidden">(Tap for more)</span>
-                                    <span class="hidden sm:inline">(Up to date)</span>
-                                </div>
-                                <div class="hidden sm:block">
-                                    <div class="text-6xl font-medium mt-2">2K</div>
-                                    <div class="text-6xl font-medium">25</div>
-                                </div>
-                            </div>
+                <div class="mt-20 max-w-6xl">
+                    <h4 class="text-[12px] uppercase text-gray-500 mb-4">LOGOTYPE</h4>
+                    <div class="border-t border-[#DDDDDD] mb-4"></div>
+                    <div class="grid grid-cols-2 gap-12">
+                        <p class="text-[14px] mt-20 text-gray-600">The Animeal logo design exemplifies the effective fusion of cultural and thematic elements to create a strong, memorable brand identity.</p>
+                        <div class="p-8 flex items-center justify-center">
+                            <img src="img/animeallogotype.png" alt="Bagoscout Logo Grid" class="w-full max-w-[300px]">
                         </div>
                     </div>
-                    
-                    <div class="flex-1">
-                        <div class="skills-list space-y-0">
-                            <!-- UI/UX -->
-                            <div class="skill-item">
-                                <div class="skill-name text-4xl lg:text-6xl font-medium cursor-pointer sm:cursor-default">UI/UX</div>
-                                <div class="skill-desc text-sm text-white">Specializing in UI and UX design with 3 years of crafting experience using Figma</div>
-                            </div>
-                            
-                            <!-- LOGO -->
-                            <div class="skill-item">
-                                <div class="skill-name text-4xl lg:text-6xl font-medium cursor-pointer sm:cursor-default">LOGO</div>
-                                <div class="skill-desc text-sm text-white">Modern, minimalistic type of logo approach is my typical go to</div>
-                            </div>
-                            
-                            <!-- ILLUSTRATION -->
-                            <div class="skill-item">
-                                <div class="skill-name text-4xl lg:text-6xl font-medium cursor-pointer sm:cursor-default">ILLUSTRATION</div>
-                                <div class="skill-desc text-sm text-white">Creating basic illustrations for 2 years.</div>
-                            </div>
-                            
-                            <!-- GRAPHIC DESIGN -->
-                            <div class="skill-item">
-                                <div class="skill-name text-4xl lg:text-6xl font-medium cursor-pointer sm:cursor-default">GRAPHIC DESIGN</div>
-                                <div class="skill-desc text-sm text-white">Social media posters, profile cards, and other personal projects</div>
-                            </div>
-                            
-                            <!-- CHARACTER DESIGN -->
-                            <div class="skill-item">
-                                <div class="skill-name text-4xl lg:text-6xl font-medium cursor-pointer sm:cursor-default">
-                                    CHARACTER <span class="hidden sm:inline">DESIGN</span>
-                                </div>
-                                <div class="skill-desc text-sm text-white">Advanced beginner level illustrator, being able to understand basic postures and proportions</div>
-                            </div>
+                </div>
+                <div class="mt-15 max-w-6xl">
+                    <h4 class="text-[12px] uppercase text-gray-500 mb-4">COLOR PALETTE</h4>
+                    <div class="border-t border-[#DDDDDD] mb-4"></div>
+                    <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-0">
+                        <div class="aspect-square bg-[#181818] p-3 sm:p-4 lg:p-6 flex flex-col justify-end">
+                            <p class="text-white text-[10px] sm:text-[11px] lg:text-[12px] font-medium">Woodsmoke</p>
+                            <p class="text-white text-[10px] sm:text-[11px] lg:text-[12px] opacity-75">#181818</p>
+                        </div>
+                        <div class="aspect-square bg-[#2C2C2C] p-3 sm:p-4 lg:p-6 flex flex-col justify-end">
+                            <p class="text-white text-[10px] sm:text-[11px] lg:text-[12px] font-medium">Mine Shaft</p>
+                            <p class="text-white text-[10px] sm:text-[11px] lg:text-[12px] opacity-75">#2C2C2C</p>
+                        </div>
+                        <div class="aspect-square bg-[#424D6A] p-3 sm:p-4 lg:p-6 flex flex-col justify-end">
+                            <p class="text-white text-[10px] sm:text-[11px] lg:text-[12px] font-medium">Fiord</p>
+                            <p class="text-white text-[10px] sm:text-[11px] lg:text-[12px] opacity-75">#424D6A</p>
+                        </div>
+                        <div class="aspect-square bg-[#A9A9A9] p-3 sm:p-4 lg:p-6 flex flex-col justify-end">
+                            <p class="text-white text-[10px] sm:text-[11px] lg:text-[12px] font-medium">Silver Chalice</p>
+                            <p class="text-white text-[10px] sm:text-[11px] lg:text-[12px] opacity-75">#A9A9A9</p>
+                        </div>
+                        <div class="aspect-square bg-[#F3F3F3] p-3 sm:p-4 lg:p-6 flex flex-col justify-end">
+                            <p class="text-gray-600 text-[10px] sm:text-[11px] lg:text-[12px] font-medium">Whitesmoke</p>
+                            <p class="text-gray-600 text-[10px] sm:text-[11px] lg:text-[12px] opacity-75">#F3F3F3</p>
+                        </div>
+                        <div class="aspect-square bg-white p-3 sm:p-4 lg:p-6 flex flex-col justify-end border border-gray-200">
+                            <p class="text-gray-600 text-[10px] sm:text-[11px] lg:text-[12px] font-medium">White</p>
+                            <p class="text-gray-600 text-[10px] sm:text-[11px] lg:text-[12px] opacity-75">#FFFFFF</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-20 max-w-6xl">
+                    <h4 class="text-[12px] uppercase text-gray-500 mb-4">FONT STYLE</h4>
+                    <div class="border-t border-[#DDDDDD] mb-4"></div>
+                    <div class="grid grid-cols-2 gap-8">
+                        <div class="bg-[#2C2C2C] p-16 flex flex-col items-center justify-center">
+                            <div class="text-white text-7xl font-poppins">Aa</div>
+                            <p class="text-white mt-4 text-xl">Trade Winds</p>
+                        </div>
+                        <div class="bg-[#424D6A] p-16 flex flex-col items-center justify-center">
+                            <div class="text-[#ffffff] text-7xl font-sansation">Aa</div>
+                            <p class="text-[#ffffff] mt-4 text-xl">Sansation</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-20 max-w-6xl">
+                    <h4 class="text-[12px] uppercase text-gray-500 mb-4">PREVIEW</h4>
+                    <div class="border-t border-[#DDDDDD] mb-4"></div>
+                    <div class="space-y-12">
+                        <div class="p-8 rounded-lg">
+                            <img src="img/animealimg2.png" alt="Bagoscout Preview 1">
+                        </div>
+                        <div class="p-14 rounded-lg">
+                            <img src="img/animealimg3.png" alt="Bagoscout Preview 2" >
+                        </div>
+                        <div class="p-8 rounded-lg flex justify-center">
+                            <img src="img/animealimg4.png" alt="Bagoscout Chat Interface">
+                        </div>
+                        <div class="p-8 rounded-lg flex justify-center">
+                            <img src="img/animealimg5.png" alt="Bagoscout Profile Page">
+                        </div>
+                        <div class="p-8 rounded-lg flex justify-center">
+                            <img src="img/animealimg6.png" alt="Bagoscout Job Listing">
                         </div>
                     </div>
                 </div>
             </div>
         </section>
-
-        <!-- Footer Section -->
-        <footer id="contact" class="bg-[#111415] py-16 border-t border-white/5 mt-0">
-            <div class="container mx-auto px-4">
-                <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-8">
-                    <!-- Logo and Tagline -->
-                    <div class="max-w-xs">
-                        <div class="flex items-center mb-4">
-                            <img src="img/logowhite.png" alt="Perocho Logo" class="h-6 mr-2">
-                            <div class="text-2xl font-medium">Seeger Perocho</div>
-                        </div>
-                        <p class="opacity-50 text-sm">Creating meaningful digital experiences through thoughtful design and creative solutions.</p>
+        <section class="pb-20">
+            <div class="container mx-auto px-20 max-w-[1240px]">
+                <div class="flex justify-center items-center gap-16">
+                    <a href="bagoscout.html" class="text-gray-900 hover:text-gray-600 transition-colors duration-300">
+                        <span class="whitespace-nowrap block text-sm">Previous case</span></a>
+                    </a>
+                    <div class="flex space-x-2">
+                        <span class="w-2 h-2 rounded-full bg-gray-300"></span>
+                        <span class="w-2 h-2 rounded-full bg-gray-900"></span>
+                        <span class="w-2 h-2 rounded-full bg-gray-300"></span>
+                        <span class="w-2 h-2 rounded-full bg-gray-300"></span>
                     </div>
-
-                    <!-- Contact Form -->
-                    <div class="max-w-md w-full">
-                        <h3 class="text-lg font-medium mb-4">Get in Touch</h3>
-                        <form action="https://formsubmit.co/seegerperocho2@gmail.com" method="POST" class="space-y-3">
-                            <!-- Honeypot -->
-                            <input type="text" name="_honey" style="display:none">
-                            
-                            <!-- Disable Captcha -->
-                            <input type="hidden" name="_captcha" value="false">
-                            
-                            <!-- Return to your website instead of FormSubmit thank you page -->
-                            <input type="hidden" name="_next" value="https://seegerportfolio.vercel.app">
-                            
-                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                                <div>
-                                    <input type="text" id="name" name="name" placeholder="Name" required class="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-neon transition-colors">
-                                </div>
-                                <div>
-                                    <input type="email" id="email" name="email" placeholder="Email" required class="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-neon transition-colors">
-                                </div>
-                            </div>
-                            <div>
-                                <input type="text" id="subject" name="subject" placeholder="Subject" required class="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-neon transition-colors">
-                            </div>
-                            <div>
-                                <textarea id="message" name="message" rows="3" placeholder="Message" required class="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-neon transition-colors"></textarea>
-                            </div>
-                            <div class="flex items-center justify-end">
-                                <button type="submit" class="bg-neon text-black font-medium px-4 py-2 text-sm rounded-lg hover:bg-[#d8ff5a] transition-colors">Send Message</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-
-                <div class="mt-16 pt-8 border-t border-white/5 flex flex-col sm:flex-row justify-between items-center">
-                    <!-- Quick Links -->
-                    <div class="grid grid-cols-2 sm:grid-cols-3 gap-8">
-                        <div>
-                            <h4 class="text-lg mb-4">Navigation</h4>
-                            <ul class="space-y-2 opacity-70">
-                                <li><a href="#about" class="hover:text-neon transition-colors">About</a></li>
-                                <li><a href="#works" class="hover:text-neon transition-colors">Works</a></li>
-                                <li><a href="#skills" class="hover:text-neon transition-colors">Skills</a></li>
-                            </ul>
-                        </div>
-                        <div class="pr-4">
-                            <h4 class="text-lg mb-4">Contact</h4>
-                            <ul class="space-y-2 opacity-70">
-                                <li><a href="mailto:seegerperocho2@gmail.com" class="hover:text-neon transition-colors text-sm sm:text-base break-words">seegerperocho2@gmail.com</a></li>
-                                <li><a href="tel:+639272770032" class="hover:text-neon transition-colors">+639 272 770 032</a></li>
-                            </ul>
-                        </div>
-                        <div>
-                            <h4 class="text-lg mb-4">Social</h4>
-                            <div class="flex gap-4">
-                                <!-- Facebook -->
-                                <a href="https://facebook.com/" class="w-10 h-10 flex items-center justify-center bg-white/5 rounded-full hover:bg-neon hover:text-black transition-all">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                        <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path>
-                                    </svg>
-                                </a>
-                                <!-- Twitter -->
-                                <a href="https://twitter.com/" class="w-10 h-10 flex items-center justify-center bg-white/5 rounded-full hover:bg-neon hover:text-black transition-all">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                        <path d="M6 4l12 16M6 20L18 4"/>
-                                    </svg>
-                                </a>
-                                <!-- Dribbble -->
-                                <a href="https://dribbble.com/" class="w-10 h-10 flex items-center justify-center bg-white/5 rounded-full hover:bg-neon hover:text-black transition-all">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                        <circle cx="12" cy="12" r="10"></circle>
-                                        <path d="M8.56 2.75c4.37 6.03 6.02 9.42 8.03 17.72m2.54-15.38c-3.72 4.35-8.94 5.66-16.88 5.85m19.5 1.9c-3.5-.93-6.63-.82-8.94 0-2.58.92-5.01 2.86-7.44 6.32"></path>
-                                    </svg>
-                                </a>
-                                <!-- Instagram -->
-                                <a href="https://instagram.com/" class="w-10 h-10 flex items-center justify-center bg-white/5 rounded-full hover:bg-neon hover:text-black transition-all">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                        <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
-                                        <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
-                                        <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
-                                    </svg>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Copyright -->
-                <div class="mt-12 pt-8 border-t border-white/5 flex flex-col sm:flex-row justify-between items-center">
-                    <div class="text-sm opacity-50">&copy; 2025 Seeger Perocho. All rights reserved.</div>
-                    <div class="text-sm mt-4 sm:mt-0">
-                        <a href="#" class="opacity-50 hover:opacity-100 hover:text-neon transition-all">Privacy Policy</a>
-                        <span class="mx-2 opacity-50">|</span>
-                        <a href="#" class="opacity-50 hover:opacity-100 hover:text-neon transition-all">Terms of Service</a>
-                    </div>
+                        <span class="whitespace-nowrap text-gray-400 block text-sm">Next case</span></a>
+                    </a>
                 </div>
             </div>
-        </footer>
-
-        <script>
-        document.addEventListener('mousemove', (e) => {
-            if (window.innerWidth > 768) {
-                const circularText = document.querySelector('.circular-text');
-                circularText.style.left = e.clientX + 'px';
-                circularText.style.top = e.clientY + 'px';
-            }
-        });
-
-        // Loading screen and content animations
-        window.addEventListener('load', () => {
-            const loadingScreen = document.querySelector('.loading-screen');
-            const mainContent = document.querySelector('.main-content');
-            const contentSections = document.querySelectorAll('.content-section');
-            
-            if (performance.navigation.type === 1 || !localStorage.getItem('hasVisited')) {
+        </section>
+        <br>
+        <section id="contact" class="w-full bg-[#2a2a2a]">
+            <div class="container mx-auto px-20 py-20">
+                <h2 class="text-white text-[15px] font-regular mb-10">CONNECT WITH ME</h2>
+                <div class="border-t border-[#DDDDDD] opacity-25 mb-16"></div>
+                
+                <div class="grid md:grid-cols-3 gap-16">
+                    <div class="space-y-8">
+                        <a href="#" class="block group">
+                            <div class="flex items-center space-x-3">
+                                <span class="text-white text-xl font-light hover:translate-x-2 transition-transform duration-300">Dribbble</span>
+                            </div>
+                        </a>
+                        <a href="#" class="block group">
+                            <div class="flex items-center space-x-3">
+                                <span class="text-white text-xl font-light hover:translate-x-2 transition-transform duration-300">Behance</span>
+                            </div>
+                        </a>
+                        <a href="#" class="block group">
+                            <div class="flex items-center space-x-3">
+                                <span class="text-white text-xl font-light hover:translate-x-2 transition-transform duration-300">Linkedin</span>
+                            </div>
+                        </a>
+                        <a href="#" class="block group">
+                            <div class="flex items-center space-x-3">
+                                <span class="text-white text-xl font-light hover:translate-x-2 transition-transform duration-300">Instagram</span>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="space-y-8">
+                        <a href="#" class="block group">
+                            <div class="flex items-center space-x-3">
+                                <span class="text-white text-xl font-light hover:translate-x-2 transition-transform duration-300">Facebook</span>
+                            </div>
+                        </a>
+                        <a href="#" class="block group">
+                            <div class="flex items-center space-x-3">
+                                <span class="text-white text-xl font-light hover:translate-x-2 transition-transform duration-300">Twitter</span>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="space-y-8">
+                        <div>
+                            <h3 class="text-white text-xl font-light mb-2">Email</h3>
+                            <p class="text-white text-lg font-light">seegerperocho2@gmail.com</p>
+                        </div>
+                        <div>
+                            <h3 class="text-white text-xl font-light mb-2">Phone</h3>
+                            <p class="text-white text-lg font-light">09272770032</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-32 text-center">
+                    <div class="border-t border-[#DDDDDD] opacity-25 mb-16"></div>
+                    <p class="text-white mb--400 text-sm font-light">Â©SegerPerocho 2025. All Rights Reserved</p>
+                </div>
+            </div>
+        </section>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Loading screen functionality
+            setTimeout(() => {
+                document.querySelector('.loading-screen').classList.add('hide-loading');
                 setTimeout(() => {
-                    loadingScreen.classList.add('hide');
-                    mainContent.classList.add('show');
+                    document.querySelector('.loading-screen').style.display = 'none';
+                    document.querySelector('.content-wrapper').style.display = 'block';
                     setTimeout(() => {
-                        contentSections.forEach((section, index) => {
-                            setTimeout(() => {
-                                section.classList.add('show');
-                            }, index * 200);
-                        });
-                    }, 1000);
-                    localStorage.setItem('hasVisited', 'true');
-                }, 4000);
-            } else {
-                loadingScreen.style.display = 'none';
-                mainContent.classList.add('show');
-                contentSections.forEach(section => section.classList.add('show'));
-            }
-            
-            // Initialize skill item click handlers
-            const skillNames = document.querySelectorAll('.skill-name');
-            
-            // Function to handle skill item clicks
-            function handleSkillClick(element) {
-                const skillItem = element.closest('.skill-item');
-                const skillName = skillItem.querySelector('.skill-name');
-                const skillDesc = skillItem.querySelector('.skill-desc');
-                
-                // Check if this item is already active (description is visible)
-                const isActive = skillDesc.style.visibility === 'visible';
-                
-                // First, hide all descriptions and show all names
-                document.querySelectorAll('.skill-item').forEach(item => {
-                    const name = item.querySelector('.skill-name');
-                    const desc = item.querySelector('.skill-desc');
-                    
-                    name.style.visibility = 'visible';
-                    name.style.opacity = '1';
-                    
-                    desc.style.visibility = 'hidden';
-                    desc.style.opacity = '0';
-                });
-                
-                // If this item was already active, we're done (it's now reset)
-                // If not, toggle this item to show its description
-                if (!isActive) {
-                    skillName.style.visibility = 'hidden';
-                    skillName.style.opacity = '0';
-                    
-                    skillDesc.style.visibility = 'visible';
-                    skillDesc.style.opacity = '1';
-                    // The color is set in CSS via media query, no need to set it here
-                }
-            }
-            
-            // Add click handlers to all skill names and descriptions on mobile
-            if (window.innerWidth < 640) {
-                // Add click handlers to skill names
-                skillNames.forEach(skillName => {
-                    skillName.addEventListener('click', function() {
-                        handleSkillClick(this);
-                    });
-                });
-                
-                // Add click handlers to skill descriptions
-                const skillDescs = document.querySelectorAll('.skill-desc');
-                skillDescs.forEach(skillDesc => {
-                    skillDesc.addEventListener('click', function() {
-                        handleSkillClick(this);
-                    });
-                });
-            }
-            
-            // Re-initialize skill item click handlers on resize
-            window.addEventListener('resize', () => {
-                const skillNames = document.querySelectorAll('.skill-name');
-                const skillDescs = document.querySelectorAll('.skill-desc');
-                
-                // Remove existing click handlers by cloning
-                skillNames.forEach(skillName => {
-                    skillName.replaceWith(skillName.cloneNode(true));
-                });
-                
-                skillDescs.forEach(skillDesc => {
-                    skillDesc.replaceWith(skillDesc.cloneNode(true));
-                });
-                
-                // Reset styles for desktop view
-                if (window.innerWidth >= 640) {
-                    // Desktop view - make sure all elements are visible
-                    skillNames.forEach(name => {
-                        name.style.visibility = 'visible';
-                        name.style.opacity = '1';
-                    });
-                    
-                    skillDescs.forEach(desc => {
-                        desc.style.visibility = 'visible';
-                        desc.style.opacity = '1';
-                        desc.style.fontSize = '';
-                    });
-                } else {
-                    // Mobile view - add click handlers
-                    document.querySelectorAll('.skill-name').forEach(skillName => {
-                        skillName.addEventListener('click', function() {
-                            handleSkillClick(this);
-                        });
-                    });
-                    
-                    document.querySelectorAll('.skill-desc').forEach(skillDesc => {
-                        skillDesc.addEventListener('click', function() {
-                            handleSkillClick(this);
-                        });
-                    });
-                    
-                    // Initially hide all descriptions on mobile
-                    skillDescs.forEach(desc => {
-                        desc.style.visibility = 'hidden';
-                        desc.style.opacity = '0';
-                    });
-                }
-            });
+                        document.querySelector('.content-wrapper').style.opacity = '1';
+                        document.querySelector('.content-wrapper').style.transform = 'translateY(0)';
+                    }, 50);
+                }, 800);
+            }, 2000);
 
-            window.addEventListener('resize', updateWords);
-            
-            // Initial setup - ensure descriptions are visible on desktop
-            if (window.innerWidth >= 640) {
-                const skillDescs = document.querySelectorAll('.skill-desc');
-                skillDescs.forEach(desc => {
-                    desc.style.visibility = 'visible';
-                    desc.style.opacity = '1';
-                });
+            // Hamburger menu functionality
+            const hamburger = document.querySelector('.hamburger');
+            const mobileMenu = document.querySelector('.mobile-menu');
+            const mobileMenuLinks = document.querySelectorAll('.mobile-menu .nav-link');
+
+            function toggleMenu() {
+                hamburger.classList.toggle('active');
+                mobileMenu.classList.toggle('active');
+                document.body.style.overflow = mobileMenu.classList.contains('active') ? 'hidden' : '';
+                document.querySelector(".ham1").style.backgroundColor = mobileMenu.classList.contains('active') ? 'white' : 'black';
+                document.querySelector(".ham2").style.backgroundColor = mobileMenu.classList.contains('active') ? 'white' : 'black';
+                document.querySelector(".ham3").style.backgroundColor = mobileMenu.classList.contains('active') ? 'white' : 'black';
             }
-            
-            // Text reveal animation
-            const revealTexts = document.querySelectorAll('.reveal-text');
-            let lastScrollY = window.scrollY;
-            let scrollDirection = 'none';
-            let scrollTimeout;
-            
-            // Split text into words
-            revealTexts.forEach(text => {
-                const words = text.textContent.trim().split(/\s+/);
-                text.textContent = '';
-                words.forEach(word => {
-                    const span = document.createElement('span');
-                    span.textContent = word;
-                    span.className = 'word';
-                    text.appendChild(span);
+
+            hamburger.addEventListener('click', toggleMenu);
+
+            mobileMenuLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    toggleMenu();
                 });
             });
-
-            // Check if word is in middle of viewport with offset
-            function getWordPosition(element) {
-                const rect = element.getBoundingClientRect();
-                const windowHeight = window.innerHeight;
-                const revealPoint = windowHeight * 0.90; // Changed from 0.85 to 0.90 (further down)
-                return {
-                    distance: Math.abs(rect.top + rect.height / 2 - revealPoint),
-                    isAboveMiddle: rect.top + rect.height / 2 < revealPoint
-                };
-            }
-
-            // Update words based on scroll position and proximity
-            function updateWords() {
-                const currentScrollY = window.scrollY;
-                const newDirection = currentScrollY > lastScrollY ? 'down' : 'up';
-                const viewportRevealPoint = window.innerHeight * 0.90; // Changed from 0.85 to 0.90 (further down)
-                const triggerRange = 100; // Distance from middle where words start to reveal
-
-                revealTexts.forEach(text => {
-                    const words = Array.from(text.querySelectorAll('.word'));
-                    const visibleWords = words.filter(word => {
-                        const rect = word.getBoundingClientRect();
-                        const wordMiddle = rect.top + (rect.height / 2);
-                        const distanceFromRevealPoint = Math.abs(wordMiddle - viewportRevealPoint);
-                        return distanceFromRevealPoint < triggerRange;
-                    });
-
-                    if (newDirection === 'down') {
-                        visibleWords.forEach((word, index) => {
-                            const rect = word.getBoundingClientRect();
-                            const wordMiddle = rect.top + (rect.height / 2);
-                            if (wordMiddle <= viewportRevealPoint) {
-                                setTimeout(() => word.classList.add('revealed'), index * 100);
-                            }
-                        });
-                    } else {
-                        [...visibleWords].reverse().forEach((word, index) => {
-                            const rect = word.getBoundingClientRect();
-                            const wordMiddle = rect.top + (rect.height / 2);
-                            if (wordMiddle > viewportRevealPoint) {
-                                setTimeout(() => word.classList.remove('revealed'), index * 100);
-                            }
-                        });
-                    }
-                });
-
-                lastScrollY = currentScrollY;
-            }
-
-            // Scroll event handler with debounce
-            window.addEventListener('scroll', () => {
-                clearTimeout(scrollTimeout);
-                updateWords();
-                
-                scrollTimeout = setTimeout(() => {
-                    scrollDirection = 'none';
-                }, 150);
-            });
-
-            window.addEventListener('resize', updateWords);
-            
-            // Initial check
-            updateWords();
         });
-        </script>
+    </script>
 </body>
 </html>
